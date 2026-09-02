@@ -279,7 +279,7 @@ body.ai-dialog-open {
   &__benchmark-point {
     align-items: center;
     background: $color-white;
-    border: 3px solid $color-red;
+    border: 2px solid $color-red;
     border-radius: 50%;
     box-shadow: 0 4px 14px rgba($color-black, 0.2);
     cursor: pointer;
@@ -402,10 +402,10 @@ body.ai-dialog-open {
 
   &__benchmark-chart__legend-mark--tokens:after {
     border-bottom: 3px solid transparent;
-    border-right: 4px solid $color-red;
+    border-left: 4px solid $color-red;
     border-top: 3px solid transparent;
     background: transparent;
-    left: 0;
+    left: 12px;
     top: 2px;
   }
 
