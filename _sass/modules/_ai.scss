@@ -582,6 +582,13 @@ body.ai-dialog-open {
     }
   }
 
+  &__model__effort {
+    color: $color-grey-5;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+  }
+
   &__model--button {
     background: transparent;
     color: $color-black;
