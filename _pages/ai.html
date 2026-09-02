@@ -87,7 +87,6 @@ redirect_from:
                 {% endfor %}
                 {% assign api_recall = recalled_runs_total | times: 100.0 | divided_by: model.metrics.total_runs | round: 1 %}
                 {% assign display_name = model.name %}
-                {% if model.id == "sol" %}{% assign display_name = "GPT-5.6 Sol" %}{% endif %}
                 <tr data-model="{{ display_name }}">
                   <th scope="row">
                     <button type="button" class="ai__model ai__model--button" data-eval-details data-model-id="{{ model.id }}" aria-label="View {{ display_name }} evaluation details">
@@ -241,10 +240,9 @@ redirect_from:
             frameworkById[framework.id] = framework;
           });
 
-          var displayNames = { sol: 'GPT-5.6 Sol' };
 
           function displayName(model) {
-            return displayNames[model.id] || model.name;
+            return model.name;
           }
 
           function recallPercentage(model) {

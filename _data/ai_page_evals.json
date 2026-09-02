@@ -52,7 +52,7 @@
  "models": [
   {
    "id": "opus-5",
-   "name": "OPUS-5",
+   "name": "Claude Opus 5",
    "vendor_id": "anthropic",
    "default_effort": "high",
    "metrics": {
@@ -67,7 +67,7 @@
   },
   {
    "id": "fable-5-1",
-   "name": "FABLE-5.1",
+   "name": "Claude Fable 5.1",
    "vendor_id": "anthropic",
    "default_effort": "high",
    "metrics": {
@@ -82,7 +82,7 @@
   },
   {
    "id": "kimi-k3",
-   "name": "KIMI-K3",
+   "name": "Kimi K3",
    "vendor_id": "moonshot-ai",
    "default_effort": "max",
    "metrics": {
@@ -97,7 +97,7 @@
   },
   {
    "id": "fable-5",
-   "name": "FABLE-5",
+   "name": "Claude Fable 5",
    "vendor_id": "anthropic",
    "default_effort": "high",
    "metrics": {
@@ -112,7 +112,7 @@
   },
   {
    "id": "sol",
-   "name": "SOL",
+   "name": "GPT-5.6 Sol",
    "vendor_id": "openai",
    "default_effort": "medium",
    "metrics": {
@@ -127,7 +127,7 @@
   },
   {
    "id": "grok-4-6",
-   "name": "GROK-4.6",
+   "name": "Grok 4.6",
    "vendor_id": "xai",
    "default_effort": "high",
    "metrics": {
@@ -142,7 +142,7 @@
   },
   {
    "id": "glm-5-3-flash",
-   "name": "GLM-5.3-FLASH",
+   "name": "GLM 5.3 Flash",
    "vendor_id": "z-ai",
    "default_effort": "max",
    "metrics": {
@@ -157,7 +157,7 @@
   },
   {
    "id": "glm-5-3",
-   "name": "GLM-5.3",
+   "name": "GLM 5.3",
    "vendor_id": "z-ai",
    "default_effort": "max",
    "metrics": {
@@ -172,7 +172,7 @@
   },
   {
    "id": "opus-4-8",
-   "name": "OPUS-4.8",
+   "name": "Claude Opus 4.8",
    "vendor_id": "anthropic",
    "default_effort": "high",
    "metrics": {
@@ -187,7 +187,7 @@
   },
   {
    "id": "terra",
-   "name": "TERRA",
+   "name": "GPT-5.6 Terra",
    "vendor_id": "openai",
    "default_effort": "medium",
    "metrics": {
@@ -202,7 +202,7 @@
   },
   {
    "id": "qwen3-8-27b",
-   "name": "QWEN3.8-27B",
+   "name": "Qwen3.8-27B",
    "vendor_id": "qwen",
    "default_effort": "xhigh",
    "metrics": {
@@ -217,7 +217,7 @@
   },
   {
    "id": "muse-1-2",
-   "name": "MUSE-1.2",
+   "name": "Muse Spark 1.2",
    "vendor_id": "meta",
    "default_effort": "medium",
    "metrics": {
@@ -232,7 +232,7 @@
   },
   {
    "id": "luna",
-   "name": "LUNA",
+   "name": "GPT-5.6 Luna",
    "vendor_id": "openai",
    "default_effort": "medium",
    "metrics": {
@@ -247,7 +247,7 @@
   },
   {
    "id": "gemini-3-7-flash",
-   "name": "GEMINI-3.7-FLASH",
+   "name": "Gemini 3.7 Flash",
    "vendor_id": "google",
    "default_effort": "medium",
    "metrics": {
@@ -262,7 +262,7 @@
   },
   {
    "id": "sonnet-5",
-   "name": "SONNET-5",
+   "name": "Claude Sonnet 5",
    "vendor_id": "anthropic",
    "default_effort": "high",
    "metrics": {
@@ -277,7 +277,7 @@
   },
   {
    "id": "glm-5-2",
-   "name": "GLM-5.2",
+   "name": "GLM 5.2",
    "vendor_id": "z-ai",
    "default_effort": "high",
    "metrics": {
@@ -292,7 +292,7 @@
   },
   {
    "id": "deepseek",
-   "name": "DEEPSEEK",
+   "name": "DeepSeek V4 Flash",
    "vendor_id": "deepseek",
    "default_effort": "high",
    "metrics": {

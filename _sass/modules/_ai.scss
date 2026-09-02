@@ -539,15 +539,17 @@ body.ai-dialog-open {
       font-weight: 700;
       min-height: 44px;
       min-width: 44px;
-      padding: 0;
+      padding: 0 20px;
       position: relative;
       text-align: inherit;
       text-transform: inherit;
     }
 
-    [aria-sort] button {
-      padding-right: 14px;
+    thead th:first-child button {
+      padding-left: 4px;
+    }
 
+    [aria-sort] button {
       &:after {
         color: $color-red;
         font-size: 16px;
@@ -610,7 +612,6 @@ body.ai-dialog-open {
     border-radius: 999px;
     display: inline-block;
     font-weight: 700;
-    min-width: 48px;
     padding: 6px 10px;
   }
 
