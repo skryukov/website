@@ -279,7 +279,7 @@ body.ai-dialog-open {
   &__benchmark-point {
     align-items: center;
     background: $color-white;
-    border: 3px solid $color-red;
+    border: 2px solid $color-red;
     border-radius: 50%;
     box-shadow: 0 4px 14px rgba($color-black, 0.2);
     cursor: pointer;
@@ -402,10 +402,10 @@ body.ai-dialog-open {
 
   &__benchmark-chart__legend-mark--tokens:after {
     border-bottom: 3px solid transparent;
-    border-right: 4px solid $color-red;
+    border-left: 4px solid $color-red;
     border-top: 3px solid transparent;
     background: transparent;
-    left: 0;
+    left: 12px;
     top: 2px;
   }
 
@@ -539,15 +539,17 @@ body.ai-dialog-open {
       font-weight: 700;
       min-height: 44px;
       min-width: 44px;
-      padding: 0;
+      padding: 0 20px;
       position: relative;
       text-align: inherit;
       text-transform: inherit;
     }
 
-    [aria-sort] button {
-      padding-right: 14px;
+    thead th:first-child button {
+      padding-left: 4px;
+    }
 
+    [aria-sort] button {
       &:after {
         color: $color-red;
         font-size: 16px;
@@ -582,6 +584,13 @@ body.ai-dialog-open {
     }
   }
 
+  &__model__effort {
+    color: $color-grey-5;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+  }
+
   &__model--button {
     background: transparent;
     color: $color-black;
@@ -603,7 +612,6 @@ body.ai-dialog-open {
     border-radius: 999px;
     display: inline-block;
     font-weight: 700;
-    min-width: 48px;
     padding: 6px 10px;
   }
 

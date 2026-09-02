@@ -87,12 +87,11 @@ redirect_from:
                 {% endfor %}
                 {% assign api_recall = recalled_runs_total | times: 100.0 | divided_by: model.metrics.total_runs | round: 1 %}
                 {% assign display_name = model.name %}
-                {% if model.id == "sol" %}{% assign display_name = "GPT-5.6 Sol" %}{% endif %}
                 <tr data-model="{{ display_name }}">
                   <th scope="row">
                     <button type="button" class="ai__model ai__model--button" data-eval-details data-model-id="{{ model.id }}" aria-label="View {{ display_name }} evaluation details">
                       <img src="{{ vendor.logo }}" alt="{{ vendor.name }}" width="24" height="24" />
-                      <span>{{ display_name }}</span>
+                      <span>{{ display_name }}</span>{% if model.default_effort %}<span class="ai__model__effort">{{ model.default_effort }}</span>{% endif %}
                     </button>
                   </th>
                   <td data-sort-column="accuracy" data-sort-value="{{ model.metrics.accuracy_percentage }}">
@@ -119,11 +118,11 @@ redirect_from:
         <div class="ai__benchmark-chart">
           <div class="ai__benchmark-chart__header">
             <h3 data-benchmark-title>Accuracy vs. token efficiency</h3>
-            <p data-benchmark-description>The strongest models rise toward the top-left.</p>
+            <p data-benchmark-description>The strongest models rise toward the top-right.</p>
             <div class="ai__benchmark-chart__filters" role="group" aria-label="Compare accuracy against">
-              <button type="button" data-benchmark-metric="tokens" aria-pressed="true">Tokens</button>
+              <button type="button" data-benchmark-metric="cost" aria-pressed="true">Cost</button>
               <button type="button" data-benchmark-metric="speed" aria-pressed="false">Speed</button>
-              <button type="button" data-benchmark-metric="cost" aria-pressed="false">Cost</button>
+              <button type="button" data-benchmark-metric="tokens" aria-pressed="false">Tokens</button>
             </div>
           </div>
 
@@ -140,7 +139,7 @@ redirect_from:
 
           <ul class="ai__benchmark-chart__legend" aria-label="Chart legend">
             <li><span class="ai__benchmark-chart__legend-mark ai__benchmark-chart__legend-mark--accuracy"></span>Higher is more accurate</li>
-            <li><span class="ai__benchmark-chart__legend-mark ai__benchmark-chart__legend-mark--tokens"></span><span data-benchmark-x-legend>Further left uses fewer tokens</span></li>
+            <li><span class="ai__benchmark-chart__legend-mark ai__benchmark-chart__legend-mark--tokens"></span><span data-benchmark-x-legend>Further right uses fewer tokens</span></li>
           </ul>
         </div>
 
@@ -150,7 +149,7 @@ redirect_from:
 
         <div class="ai__methodology">
           <h3>Methodology</h3>
-          <p>Each model ran every evaluation three times in August 2026, using the provider's default settings — 63 runs per model. Accuracy is the share of runs that passed the evaluation's hidden tests; refusals count as failures, and differences of a few points between models are within run-to-run noise. Speed is the median run duration, and tokens and cost are means per run. API recall is the percentage of runs in which the model reached directly for the target Rails API. Model-level medians come from run-level data, so they can differ slightly from the per-evaluation timings. GLM 5.3 ran on a coding-plan subscription, so it carries no dollar figures. Select any model or result for the underlying evaluation details.</p>
+          <p>Each model ran every evaluation three times in August or September 2026, using the provider's default settings — 63 runs per model. Accuracy is the share of runs that passed the evaluation's hidden tests; refusals count as failures, and differences of a few points between models are within run-to-run noise. Speed is the median run duration, and tokens and cost are means per run. API recall is the percentage of runs in which the model reached directly for the target Rails API. Model-level medians come from run-level data, so they can differ slightly from the per-evaluation timings. GLM 5.3 ran on a coding-plan subscription, so it carries no dollar figures. Select any model or result for the underlying evaluation details.</p>
           <p>Explore the open-source <a href="https://github.com/rails/ai-evals">Rails AI evaluation suite</a>.</p>
         </div>
       </section>
@@ -241,10 +240,9 @@ redirect_from:
             frameworkById[framework.id] = framework;
           });
 
-          var displayNames = { sol: 'GPT-5.6 Sol' };
 
           function displayName(model) {
-            return displayNames[model.id] || model.name;
+            return model.name;
           }
 
           function recallPercentage(model) {
@@ -374,11 +372,35 @@ redirect_from:
             var xTicks = plot.querySelector('[data-benchmark-x-ticks]');
             var yTicks = plot.querySelector('[data-benchmark-y-ticks]');
             var views = {
+              cost: {
+                title: 'Accuracy vs. cost',
+                description: 'Models toward the top-right solve more evaluations at a lower mean cost per run. Cost uses a logarithmic scale.',
+                xLabel: 'Mean cost per run',
+                xLegend: 'Further right costs less',
+                value: function(item) { return item.costPerRun; },
+                format: formatBenchmarkCost,
+                padding: function(minimum, maximum) {
+                  return [Math.log10(minimum * 0.75), Math.log10(maximum * 1.25)];
+                },
+                transform: Math.log10,
+                inverse: function(value) { return Math.pow(10, value); }
+              },
+              speed: {
+                title: 'Accuracy vs. completion time',
+                description: 'Models toward the top-right solve more evaluations with a lower median duration.',
+                xLabel: 'Median completion time',
+                xLegend: 'Further right finishes faster',
+                value: function(item) { return item.duration; },
+                format: function(value) { return formatDuration(Math.round(value)); },
+                padding: function(minimum, maximum) {
+                  return [Math.floor(minimum * 0.9 / 10) * 10, Math.ceil(maximum * 1.1 / 10) * 10];
+                }
+              },
               tokens: {
                 title: 'Accuracy vs. token efficiency',
-                description: 'The strongest models rise toward the top-left.',
+                description: 'The strongest models rise toward the top-right.',
                 xLabel: 'Mean tokens per run',
-                xLegend: 'Further left uses fewer tokens',
+                xLegend: 'Further right uses fewer tokens',
                 value: function(item) { return item.tokensPerRun; },
                 format: function(value) {
                   if (value >= 1000000) return (Math.round(value / 100000) / 10) + 'm';
@@ -387,30 +409,6 @@ redirect_from:
                 padding: function(minimum, maximum) {
                   return [Math.floor(minimum * 0.92 / 1000) * 1000, Math.ceil(maximum * 1.06 / 1000) * 1000];
                 }
-              },
-              speed: {
-                title: 'Accuracy vs. completion time',
-                description: 'Models toward the top-left solve more evaluations with a lower median duration.',
-                xLabel: 'Median completion time',
-                xLegend: 'Further left finishes faster',
-                value: function(item) { return item.duration; },
-                format: function(value) { return formatDuration(Math.round(value)); },
-                padding: function(minimum, maximum) {
-                  return [Math.floor(minimum * 0.9 / 10) * 10, Math.ceil(maximum * 1.1 / 10) * 10];
-                }
-              },
-              cost: {
-                title: 'Accuracy vs. cost',
-                description: 'Models toward the top-left solve more evaluations at a lower mean cost per run. Cost uses a logarithmic scale.',
-                xLabel: 'Mean cost per run',
-                xLegend: 'Further left costs less',
-                value: function(item) { return item.costPerRun; },
-                format: formatBenchmarkCost,
-                padding: function(minimum, maximum) {
-                  return [Math.log10(minimum * 0.75), Math.log10(maximum * 1.25)];
-                },
-                transform: Math.log10,
-                inverse: function(value) { return Math.pow(10, value); }
               }
             };
             var view = views[metric];
@@ -435,7 +433,7 @@ redirect_from:
 
             for (var tickIndex = 0; tickIndex < 5; tickIndex += 1) {
               var tickRatio = tickIndex / 4;
-              var transformedXValue = xMinimum + (xMaximum - xMinimum) * tickRatio;
+              var transformedXValue = xMaximum - (xMaximum - xMinimum) * tickRatio;
               var xValue = inverse(transformedXValue);
               var yValue = yMaximum - (yMaximum - yMinimum) * tickRatio;
               var xTick = addTextElement(xTicks, 'span', null, view.format(xValue));
@@ -445,20 +443,22 @@ redirect_from:
             }
 
             var positionedPoints = [];
-            var pointSize = 56;
-            var minimumDistance = 68;
+            var pointSize = 28;
+            var minimumDistance = pointSize * 1.2;
             var plotWidth = plot.clientWidth;
             var plotHeight = plot.clientHeight;
             var collisionOffsets = [
-              [0, 0], [52, -42], [-52, 42], [52, 42], [-52, -42],
-              [76, 0], [-76, 0], [0, 76], [0, -76],
-              [104, 0], [-104, 0], [0, 104], [0, -104],
-              [82, 70], [-82, 70], [82, -70], [-82, -70]
-            ];
+              [0, 0], [0.93, -0.75], [-0.93, 0.75], [0.93, 0.75], [-0.93, -0.75],
+              [1.36, 0], [-1.36, 0], [0, 1.36], [0, -1.36],
+              [1.86, 0], [-1.86, 0], [0, 1.86], [0, -1.86],
+              [1.46, 1.25], [-1.46, 1.25], [1.46, -1.25], [-1.46, -1.25]
+            ].map(function(offset) {
+              return [offset[0] * pointSize, offset[1] * pointSize];
+            });
 
             chartModels.forEach(function(item, index) {
               var xValue = transform(view.value(item));
-              var trueX = (xValue - xMinimum) / (xMaximum - xMinimum) * plotWidth;
+              var trueX = (xMaximum - xValue) / (xMaximum - xMinimum) * plotWidth;
               var trueY = (yMaximum - item.accuracy) / (yMaximum - yMinimum) * plotHeight;
               var position = { x: trueX, y: trueY };
               var bestAvailableDistance = -1;
@@ -548,7 +548,7 @@ redirect_from:
             });
           });
 
-          renderBenchmarkChart('tokens');
+          renderBenchmarkChart('cost');
 
           var benchmarkResizeTimer;
           window.addEventListener('resize', function() {
